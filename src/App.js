@@ -1,6 +1,6 @@
 import React,{useState, useEffect}  from 'react';
 import {Container} from 'react-bootstrap';
-import {Button, Form, ListGroup} from 'react-bootstrap';
+import {Button, Form, Row, Col, Card} from 'react-bootstrap';
 import Loader  from './components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
 import {listChat, addText} from './redux/actions/chatActions';
@@ -35,44 +35,45 @@ function App() {
 
 
   return (
-   <main>
+
      <Container>
+          <main>
      {loading ? <Loader /> : chats.map(chat => (
-             <ListGroup as="ul" key={chat._id}>
-             <ListGroup.Item as="li">{chat.author} {chat.message} {chat.timestamp}</ListGroup.Item>
-            </ListGroup>
+           
+             <Card style={{display: "flex", maxWidth: "50%", marginLeft: "20px", marginTop: "20px"}} key={chat._id}>
+            <Card.Body>
+              <Card.Title> {chat.author}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">{(new Date(parseInt(chat.timestamp)).getDate()) + '/' + (new Date(parseInt(chat.timestamp)).getMonth() + 1 + '/') + (new Date(parseInt(chat.timestamp)).getFullYear()) }</Card.Subtitle>
+              <Card.Text>
+               {chat.message}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+         
+           
           ))} 
 
-
-
-<Form onSubmit={submitHandler} >
-
-         
-              
-<Form.Group controlId="message">
-  
-  <Form.Control type="text" placeholder="Message" value={message} onChange={e => setMessage( e.target.value)}>
-
-  </Form.Control>
- </Form.Group>
-
- <Form.Group controlId="author">
-  
-  <Form.Control type="text" placeholder="Author" value={author} onChange={e => setAuthor( e.target.value)}>
-
-  </Form.Control>
- </Form.Group>
-
-
- <Button type="submit" variant="primary">
-     Submit
-
- </Button>
- 
- </Form> 
-     </Container>
-   </main>
-  );
+          </main>
+          <Form onSubmit={submitHandler} >
+            <br/>
+            <Row>
+            <Col>
+            <Form.Control  type="text" placeholder="Message" value={message} onChange={e => setMessage( e.target.value)}>
+            </Form.Control>
+            </Col>
+              <Col>
+            <Form.Control type="text" placeholder="Author" value={author} onChange={e => setAuthor( e.target.value)}>
+            </Form.Control>
+            </Col>
+            </Row>
+            <br />
+          <Button  type="submit" variant="primary" size="md" block>
+              Send
+            </Button>
+            </Form> 
+              </Container>
+            
+            );
 }
 
 export default App;
